@@ -1,6 +1,10 @@
 <template>
   <div id="app">
     <div>test</div>
+    <div>test</div>
+    <div>test</div>
+    <div>test</div>
+    <div>test</div>
     <scroll-view height="60vh" ref="scrollView" style="flex: auto">
       <img alt="Vue logo" src="./assets/logo.png">
       <HelloWorld msg="Welcome to Your Vue.js App"/>
@@ -14,6 +18,9 @@ import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
+  methods: {
+
+  },
   components: {
     HelloWorld
   }

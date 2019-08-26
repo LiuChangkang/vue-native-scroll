@@ -1,5 +1,6 @@
 <template>
   <div
+          class="n-scroll"
           :style="{height}"
           style="overflow-x: hidden;overflow-y: auto;-webkit-overflow-scrolling: touch"
           v-on:scroll="scroll"
@@ -11,7 +12,7 @@
               transform: compositing ? 'translateZ(0)' : ''
             }"
             v-on:touchstart="touchStart"
-            v-on:touchmove.stop.passive="touchMove"
+            v-on:touchmove="touchMove"
             v-on:touchend="touchEnd"
             v-on:touchcancel="touchEnd"
     >
@@ -32,20 +33,6 @@
   const SCROLL_NEGATIVE_NUMBER = __scrollTop__(window) < 0; // 是否可以负滚动
   __scrollTop__(window, 0);
 
-  let eventTouchMove = null;
-  if (document.createEvent) {
-    eventTouchMove = document.createEvent('UIEvents');
-    eventTouchMove.initEvent('touchmove', true, false);
-  }
-
-  function __triggerTouchMove__(el) {
-    if (eventTouchMove !== null) {
-      el.dispatchEvent(eventTouchMove);
-    } else if (document.createEventObject) {
-      el.fireEvent('onclick');
-    }
-  }
-
   const negativeComponent = {
     methods: {
       touchStart() {
@@ -59,7 +46,7 @@
             el.scrollTop = offsetScreen2Top - 1 // 到达底部就-1
         }
       },
-      touchMove: () => __triggerTouchMove__(),
+      touchMove() {},
       touchEnd() {}
     },
     mounted() {
@@ -83,7 +70,6 @@
           e.preventDefault();
           _.$emit('pullDownOver', e.touches[0].clientY - _.startY);
         }
-        __triggerTouchMove__(_.$el);
       },
       touchEnd() {
         if (this.startY)
@@ -120,20 +106,34 @@
       checkScrollElement() {
         this.scrollElement = this.$el;
       },
-      preventMove(e) {
-        e.preventDefault();
-      }
-    },
-    mounted() {
-      this.$root.$el.addEventListener('touchmove', this.preventMove, {
-        passive: false
-      });
-    },
-    beforeDestroy() {
-      this.$root.$el.removeEventListener('touchmove', this.preventMove);
     },
     install(Vue, set = {}) {
       Vue.component(set.name || 'scroll-view', this);
+
+      if (!set.noPreventDefault) { // 默认阻止滚动事件
+        let checkTargetElement = document.body; // 节流
+
+        document.body.addEventListener('touchmove', function (e) {
+          if (checkTargetElement !== e.target) { // 同一个元素不再检测
+            checkTargetElement = e.target;
+            let compareElement = e.target.parentElement;
+            while (compareElement !== document.body) {
+              if (compareElement.classList.contains('n-scroll')) {
+                return;
+              } else {
+                compareElement = compareElement.parentElement;
+              }
+            }
+            e.preventDefault();
+          }
+        }, {
+          passive: false
+        });
+
+        document.body.addEventListener('touchend', function () {
+          checkTargetElement = document.body;
+        });
+      }
     }
   }
 </script>

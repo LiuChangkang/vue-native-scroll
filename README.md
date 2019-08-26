@@ -14,7 +14,10 @@ yarn add vue-native-scroll
 ```
 import Vue from 'vue'
 import ScrollView from 'vue-native-scroll';
-Vue.use(ScrollView);
+Vue.use(ScrollView, {
+  name: 'scroll-view' // 全局component名，默认scroll-view
+  noPreventDefault: false // 是否全局阻止默认touchmove事件，默认true，开启后不需要阻止默认事件的元素添加n-scroll的class名即可
+});
 
 <template>
   <scroll-view>
