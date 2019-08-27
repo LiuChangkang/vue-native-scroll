@@ -1,20 +1,20 @@
 <template>
   <div
-          class="n-scroll"
-          :style="{height}"
-          style="overflow-x: hidden;overflow-y: auto;-webkit-overflow-scrolling: touch"
-          v-on:scroll="scroll"
-          v-on:scroll.once.self="checkScrollElement"
+      class="n-scroll"
+      :style="{height}"
+      style="overflow-x: hidden;overflow-y: auto;-webkit-overflow-scrolling: touch"
+      v-on:scroll="scroll"
+      v-on:scroll.once.self="checkScrollElement"
   >
     <div
-            :style="{
-              minHeight: SCROLL_NEGATIVE_NUMBER ? 'calc(100% + 2px)' : '100%',
-              transform: compositing ? 'translateZ(0)' : ''
-            }"
-            v-on:touchstart="touchStart"
-            v-on:touchmove="touchMove"
-            v-on:touchend="touchEnd"
-            v-on:touchcancel="touchEnd"
+        :style="{
+          minHeight: SCROLL_NEGATIVE_NUMBER ? 'calc(100% + 2px)' : '100%',
+          transform: compositing ? 'translateZ(0)' : ''
+        }"
+        v-on:touchstart="touchStart"
+        v-on:touchmove="touchMove"
+        v-on:touchend="touchEnd"
+        v-on:touchcancel="touchEnd"
     >
       <slot></slot>
     </div>
@@ -111,11 +111,8 @@
       Vue.component(set.name || 'scroll-view', this);
 
       if (!set.noPreventDefault) { // 默认阻止滚动事件
-        let checkTargetElement = document.body; // 节流
-
         document.body.addEventListener('touchmove', function (e) {
-          if (checkTargetElement !== e.target) { // 同一个元素不再检测
-            checkTargetElement = e.target;
+          if (e.cancelable) {
             let compareElement = e.target.parentElement;
             while (compareElement !== document.body) {
               if (compareElement.classList.contains('n-scroll')) {
@@ -128,10 +125,6 @@
           }
         }, {
           passive: false
-        });
-
-        document.body.addEventListener('touchend', function () {
-          checkTargetElement = document.body;
         });
       }
     }

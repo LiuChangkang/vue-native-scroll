@@ -33,3 +33,8 @@ new Vue({
   }
 });
 ```
+
+## TIP
+```
+ios下仅支持WKWebView，UIWebView上局部滚动会有问题，请谨慎使用。
+```
