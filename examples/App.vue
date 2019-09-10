@@ -6,8 +6,16 @@
     <div>test</div>
     <div>test</div>
     <scroll-view height="60vh" ref="scrollView" style="flex: auto">
+      <template v-slot:before>
+        这是开头的插槽
+      </template>
+
       <img alt="Vue logo" src="./assets/logo.png">
       <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+      <template v-slot:after>
+        这是结尾的插槽
+      </template>
     </scroll-view>
     <div>test</div>
   </div>

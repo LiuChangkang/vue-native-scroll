@@ -5,7 +5,9 @@
 ###install
 ```
 npm install vue-native-scroll --save
+
  or
+
 yarn add vue-native-scroll
 ```
 
@@ -36,5 +38,5 @@ new Vue({
 
 ## TIP
 ```
-ios下仅支持WKWebView，UIWebView上局部滚动会有问题，请谨慎使用。
+ios下仅兼容WKWebView，不完全兼容UIWebView上的局部滚动。
 ```

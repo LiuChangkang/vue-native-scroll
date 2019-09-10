@@ -6,6 +6,8 @@
       v-on:scroll="scroll"
       v-on:scroll.once.self="checkScrollElement"
   >
+    <slot name="before"></slot>
+
     <div
         :style="{
           minHeight: SCROLL_NEGATIVE_NUMBER ? 'calc(100% + 2px)' : '100%',
@@ -18,6 +20,8 @@
     >
       <slot></slot>
     </div>
+
+    <slot name="after"></slot>
   </div>
 </template>
 
@@ -66,7 +70,7 @@
         const _ = this;
         if (_.startY === undefined && __scrollTop__(_.scrollElement) === 0) {
           _.startY = e.touches[0].clientY;
-        } else if (e.touches[0].clientY > _.startY) {
+        } else if (e.cancelable && e.touches[0].clientY > _.startY) {
           e.preventDefault();
           _.$emit('pullDownOver', e.touches[0].clientY - _.startY);
         }
