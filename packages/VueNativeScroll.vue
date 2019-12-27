@@ -1,8 +1,7 @@
 <template>
   <div
-      class="n-scroll"
+      class="n-scroll vue-native-scroll__outer"
       :style="{height}"
-      style="overflow-x: hidden;overflow-y: auto;-webkit-overflow-scrolling: touch"
       v-on:scroll="scroll"
       v-on:scroll.once.self="checkScrollElement"
   >
@@ -26,6 +25,16 @@
 </template>
 
 <script>
+  const styleLabel = document.createElement("style");
+  styleLabel.type = "text/css";
+  const cssString = ".vue-native-scroll__outer{\n  height:auto;\n  overflow-x:hidden;\n  overflow-y:auto;\n  -webkit-overflow-scrolling:touch;\n}";
+  if (styleLabel.styleSheet) {  // IE
+    styleLabel.styleSheet.cssText = cssString;
+  } else {
+    styleLabel.appendChild(document.createTextNode(cssString));
+  }
+  document.head.appendChild(styleLabel);
+
   function __scrollTop__(el, value) {
     const hasScrollTop = 'scrollTop' in el;
     if (value === undefined)
@@ -54,7 +63,7 @@
       touchEnd() {}
     },
     mounted() {
-      if (__scrollTop__(this.$el) === 0)
+      if (this.mountedDownScroll && __scrollTop__(this.$el) === 0)
         __scrollTop__(this.$el, 1);
     }
   };
@@ -88,9 +97,13 @@
     props: {
       height: {
         type: String,
-        default: 'auto'
+        default: ''
       },
       compositing: { // 是否开启复合层加速
+        type: Boolean,
+        default: true
+      },
+      mountedDownScroll: { // 可以负滚动的情况下，初始化是否往下滚1px
         type: Boolean,
         default: true
       }
