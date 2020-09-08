@@ -6,8 +6,6 @@
 ```
 npm install vue-native-scroll --save
 
- or
-
 yarn add vue-native-scroll
 ```
 
@@ -23,10 +21,11 @@ Vue.use(ScrollView, {
 
 <template>
   <scroll-view>
+    <div>滚动条内部</div>
   </scroll-view>
 </template>
 
-or
+或
 
 import ScrollView from 'vue-native-scroll';
 new Vue({
