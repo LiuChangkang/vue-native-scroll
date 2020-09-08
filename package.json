@@ -1,6 +1,6 @@
 {
   "name": "vue-native-scroll",
-  "version": "1.3.2",
+  "version": "1.3.5",
   "description": "vue native scroll",
   "main": "packages/index.js",
   "private": false,
