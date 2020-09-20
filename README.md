@@ -34,7 +34,7 @@ new Vue({
 });
 ```
 
-## TIP
+## tip
 ```
 1、配合vant的PullRefresh组件可以实现局部区域的下拉刷新。
 ```
