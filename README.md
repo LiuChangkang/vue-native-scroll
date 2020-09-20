@@ -2,7 +2,7 @@
 
 #### 原生滚动插件，解决ios和安卓上元素在局部div内部滚动产生的问题。
 
-###install
+##install
 ```
 npm install vue-native-scroll --save
 
@@ -37,5 +37,8 @@ new Vue({
 
 ## TIP
 ```
-ios下仅兼容WKWebView，不完全兼容UIWebView上的局部滚动。
+1、配合vant的PullRefresh组件可以实现局部区域的下拉刷新。
+```
+```
+2、ios下仅兼容WKWebView，不完全兼容UIWebView上的局部滚动。
 ```

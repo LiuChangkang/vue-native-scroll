@@ -4,10 +4,12 @@
       :style="{height}"
       v-on:scroll="scroll"
       v-on:scroll.once.self="checkScrollElement"
+      ref="scrollWrapper"
   >
     <slot name="before"></slot>
 
     <div
+        ref="scrollBody"
         :style="{
           minHeight: SCROLL_NEGATIVE_NUMBER ? 'calc(100% + 2px)' : '100%',
           transform: compositing ? 'translateZ(0)' : ''
@@ -118,6 +120,10 @@
     },
     methods: {
       scroll(e) {
+        e.distance = {
+          top: this.$refs.scrollWrapper.scrollTop,
+          bottom: this.$refs.scrollBody.clientHeight - this.$refs.scrollWrapper.clientHeight - this.$refs.scrollWrapper.scrollTop
+        };
         this.$emit('scroll', e);
       },
       checkScrollElement() {
