@@ -1,16 +1,15 @@
 # vue-native-scroll
 
-#### 原生滚动插件，解决ios和安卓上元素在局部div内部滚动产生的问题。
+> 原生滚动插件，解决ios和安卓上元素在局部div内部滚动产生的问题。
 
-##install
+## install
 ```
 npm install vue-native-scroll --save
 
 yarn add vue-native-scroll
 ```
 
-
-##
+## usage
 ```
 import Vue from 'vue'
 import ScrollView from 'vue-native-scroll';
