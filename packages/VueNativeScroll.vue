@@ -2,6 +2,7 @@
   <div
       class="n-scroll vue-native-scroll__outer"
       :style="{height}"
+      style="overflow:hidden auto;-webkit-overflow-scrolling:touch"
       v-on:scroll="scroll"
       v-on:scroll.once.self="checkScrollElement"
       ref="scrollWrapper"
@@ -27,16 +28,6 @@
 </template>
 
 <script>
-  const styleLabel = document.createElement("style");
-  styleLabel.type = "text/css";
-  const cssString = ".vue-native-scroll__outer{\n  height:auto;\n  overflow-x:hidden;\n  overflow-y:auto;\n  -webkit-overflow-scrolling:touch;\n}";
-  if (styleLabel.styleSheet) {  // IE
-    styleLabel.styleSheet.cssText = cssString;
-  } else {
-    styleLabel.appendChild(document.createTextNode(cssString));
-  }
-  document.head.appendChild(styleLabel);
-
   function __scrollTop__(el, value) {
     const hasScrollTop = 'scrollTop' in el;
     if (value === undefined)
@@ -54,7 +45,7 @@
         const el = this.$el;
         const scrollTop = el.scrollTop;
         if (scrollTop === 0) {
-          el.scrollTop = 1
+            el.scrollTop = 1
         } else {
           let offsetScreen2Top = el.scrollHeight - el.clientHeight; // 可视区域距离滚动区域顶端的距离
           if (offsetScreen2Top === scrollTop)
@@ -133,7 +124,7 @@
     install(Vue, set = {}) {
       Vue.component(set.name || 'scroll-view', this);
 
-      if (!set.noPreventDefault) { // 默认阻止滚动事件
+      if (!set.noPreventDefault && document) { // 默认阻止滚动事件
         document.body.addEventListener('touchmove', function (e) {
           if (e.cancelable) {
             let compareElement = e.target.parentElement;
