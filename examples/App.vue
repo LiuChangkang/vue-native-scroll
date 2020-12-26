@@ -1,23 +1,13 @@
 <template>
   <div id="app">
-    <div>基于此插件的无限滚动</div>
-    <scroll-view ref="scrollView" style="flex: auto" @scroll="scroll" @touchstart.native="touchstart" @touchend.native="touchend">
-      <template v-slot:before>
-        <div class="scroll-header">
-          这是开头的插槽
-        </div>
-      </template>
-
+    <div style="height: 30px">无限滚动</div>
+    <scroll-view ref="scroll" class="scroll-body" @scroll="scroll" @touchstart.native="touchstart" @touchend.native="touchend">
       <img alt="Vue logo" src="./assets/logo.png">
       <ul :style="{paddingTop: paddingTop + 'px', paddingBottom: paddingBottom + 'px'}">
         <li v-for="(item, index) in showListData" :key="index" ref="showItem">
           {{ item }}
         </li>
       </ul>
-
-      <template v-slot:after>
-        这是结尾的插槽
-      </template>
     </scroll-view>
   </div>
 </template>
@@ -49,27 +39,28 @@ export default {
         this.showEndIndex++
       }
     },
-    scroll(e) {
-      const isUp = e.distance.top > this.prevTop
-      const step = Math.floor(Math.abs(e.distance.top - this.prevTop) / 66) + 3
-      if (e.distance.bottom < this.loadThreshold && isUp) {
+    scroll() {
+      const distance = this.$refs.scroll.scrollDistance();
+      const isUp = distance.top > this.prevTop;
+      const step = Math.floor(Math.abs(distance.top - this.prevTop) / 66) + 3
+      if (distance.bottom < this.loadThreshold && isUp) {
         this.addList()
-      } else if (e.distance.top > 0) {
+      } else if (distance.top > 0) {
         if (isUp) {
           this.showBottomElement(step) || this.hideTopElement(step)
         } else {
           this.showTopElement(step) || this.hideBottomElement(step)
         }
       }
-      this.prevTop = e.distance.top
+      this.prevTop = distance.top
     },
     touchstart() {
-      this.hideTopElement(9)
-      this.hideBottomElement(9)
+      this.hideTopElement(30)
+      this.hideBottomElement(30)
     },
     touchend() {
-      this.showTopElement(9)
-      this.showBottomElement(9)
+      this.showTopElement(30)
+      this.showBottomElement(30)
     },
     showTopElement(count = 1) {
       if (this.$refs.showItem[0].getBoundingClientRect().top > -99 && this.showBeginIndex > 0) {
@@ -121,9 +112,6 @@ export default {
       }
     }
   },
-  components: {
-    // HelloWorld
-  },
   mounted() {
     this.addList()
   }
@@ -158,5 +146,8 @@ export default {
   li{
     text-align: left;
     line-height: 36px;
+  }
+  .scroll-body{
+    height: calc(100vh - 30px);
   }
 </style>
